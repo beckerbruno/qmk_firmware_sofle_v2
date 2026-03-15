@@ -31,6 +31,39 @@ Disconnect the first half, connect the second one and repeat the process.
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
 
+## bruno_becker Keymap Workflow
+
+### Convert QMK Configurator JSON to keymap.c
+
+Export your keymap from [QMK Configurator](https://config.qmk.fm) as a `.json` file, then convert it:
+
+    qmk json2c sofle_v2_bruno.json -o keyboards/sofle/rev1/keymaps/bruno_becker/keymap.c
+
+### Compile the firmware
+
+    qmk compile -kb sofle/rev1 -km bruno_becker
+
+The output file will be `.build/sofle_rev1_bruno_becker.hex`.
+
+### Flash the firmware
+
+Connect the keyboard via USB, then run:
+
+    qmk flash -kb sofle/rev1 -km bruno_becker
+
+When prompted `Waiting for USB serial port - reset your controller now`, press the reset button on the keyboard (briefly double-tap the button near the TRRS connector on the Pro Micro). Repeat the process for the second half.
+
+### Dependencies (macOS)
+
+If `qmk` is not found, install it and add it to PATH:
+
+    pip3 install qmk
+    echo 'export PATH="$PATH:/Users/$(whoami)/Library/Python/3.9/bin"' >> ~/.zshrc && source ~/.zshrc
+
+If `avrdude` or `avr-gcc` are missing:
+
+    brew install avrdude avr-gcc dos2unix
+
 ## Bootloader
 
 Enter the bootloader in 3 ways:
