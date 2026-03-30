@@ -49,7 +49,7 @@ const uint8_t PROGMEM encoder_hand_swap_config[NUM_ENCODERS] = {1, 0};
 
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
-    if (is_keyboard_master()) {
+    if (!is_keyboard_master()) {
         return OLED_ROTATION_270;
     }
     return rotation;
@@ -92,7 +92,7 @@ bool oled_task_kb(void) {
     if (!oled_task_user()) {
         return false;
     }
-    if (is_keyboard_master()) {
+    if (!is_keyboard_master()) {
         print_status_narrow();
     } else {
         render_logo();
