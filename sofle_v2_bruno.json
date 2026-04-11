@@ -3,7 +3,7 @@
   "notes": "My awesome keymap",
   "version": 1,
   "keyboard": "sofle/rev1",
-  "keymap": "sofle_v2_bruno_colemakdh_",
+  "keymap": "sofle_v2_bruno",
   "layout": "LAYOUT",
   "layers": [
     [
@@ -281,7 +281,7 @@
       "KC_BSPC",
       "KC_TAB",
       "KC_NO",
-      "CG_TOGG",
+      "KC_NO",
       "KC_VOLD",
       "KC_MUTE",
       "KC_VOLU",
