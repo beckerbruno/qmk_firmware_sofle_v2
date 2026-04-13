@@ -85,7 +85,30 @@ void print_status_narrow(void) {
     led_t led_usb_state = host_keyboard_led_state();
     oled_write_ln_P(PSTR("CPSLK"), led_usb_state.caps_lock);
 
+#ifdef RGBLIGHT_ENABLE
+    {
+        uint8_t hue = rgblight_get_hue();
+        uint8_t val = rgblight_get_val();
+        bool    bright = (val > 127);
+
+        char color_letter;
+        if      (hue < 11)              color_letter = 'R'; /* Red         */
+        else if (hue < 32)              color_letter = 'O'; /* Orange      */
+        else if (hue < 53)              color_letter = 'Y'; /* Yellow      */
+        else if (hue < 107)             color_letter = 'G'; /* Green       */
+        else if (hue < 149)             color_letter = 'C'; /* Cyan        */
+        else if (hue < 192)             color_letter = 'B'; /* Blue        */
+        else if (hue < 234)             color_letter = 'P'; /* Purple/Magenta */
+        else                            color_letter = 'R'; /* Red (wrap)  */
+
+        oled_write_P(PSTR("BBS "), false);
+        char buf[2] = {color_letter, '\0'};
+        oled_write(buf, bright);
+        oled_write_P(PSTR("\n"), false);
+    }
+#else
     oled_write_ln_P(PSTR("BBS"), false);
+#endif
 }
 
 bool oled_task_kb(void) {
