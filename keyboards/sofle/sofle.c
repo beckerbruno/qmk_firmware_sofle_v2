@@ -89,21 +89,36 @@ void print_status_narrow(void) {
     {
         uint8_t hue = rgblight_get_hue();
         uint8_t val = rgblight_get_val();
-        bool    bright = (val > 127);
 
-        char color_letter;
-        if      (hue < 11)              color_letter = 'R'; /* Red         */
-        else if (hue < 32)              color_letter = 'O'; /* Orange      */
-        else if (hue < 53)              color_letter = 'Y'; /* Yellow      */
-        else if (hue < 107)             color_letter = 'G'; /* Green       */
-        else if (hue < 149)             color_letter = 'C'; /* Cyan        */
-        else if (hue < 192)             color_letter = 'B'; /* Blue        */
-        else if (hue < 234)             color_letter = 'P'; /* Purple/Magenta */
-        else                            color_letter = 'R'; /* Red (wrap)  */
+        /* Nome da cor (ate 5 chars) baseado no hue */
+        const char* color_name;
+        if      (hue < 11)              color_name = "RED  ";  /* Red         */
+        else if (hue < 32)              color_name = "ORNGE";  /* Orange      */
+        else if (hue < 53)              color_name = "YELW ";  /* Yellow      */
+        else if (hue < 107)             color_name = "GREEN";  /* Green       */
+        else if (hue < 149)             color_name = "CYAN ";  /* Cyan        */
+        else if (hue < 192)             color_name = "BLUE ";  /* Blue        */
+        else if (hue < 234)             color_name = "PURPL";  /* Purple      */
+        else                            color_name = "RED  ";  /* Red (wrap)  */
 
-        oled_write_P(PSTR("BBS "), false);
-        char buf[2] = {color_letter, '\0'};
-        oled_write(buf, bright);
+        /* Calcula pontos de brilho (0-5) */
+        uint8_t dots = (val * 5 + 127) / 255;
+        if (dots > 5) dots = 5;
+
+        /* Constrói display: "COR    ....." (nome 5 chars + espaco + 5 pontos) */
+        char buf[12];
+        /* Copia nome da cor (5 chars) */
+        for (uint8_t i = 0; i < 5; i++) {
+            buf[i] = color_name[i];
+        }
+        buf[5] = ' ';
+        /* Adiciona pontos de brilho */
+        for (uint8_t i = 0; i < 5; i++) {
+            buf[6 + i] = (i < dots) ? 0x7F : ' ';  /* 0x7F = ponto cheio no OLED */
+        }
+        buf[11] = '\0';
+
+        oled_write(buf, false);
         oled_write_P(PSTR("\n"), false);
     }
 #else

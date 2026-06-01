@@ -34,3 +34,69 @@ QMK is developed and maintained by Jack Humbert of OLKB with contributions from 
 ## Official Website
 
 [qmk.fm](https://qmk.fm) is the official website of QMK, where you can find links to this page, the documentation, and the keyboards supported by QMK.
+
+---
+
+## Sofle V2 - Configuração de Bruno Becker
+
+### Estrutura do Projeto
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `keyboards/sofle/rev1/keymaps/bruno_becker/keymap.c` | Keymap principal (Código C) |
+| `sofle_v2_bruno.json` | Export para QMK Configurator |
+| `keyboards/sofle/rev1/keymaps/bruno_becker/config.h` | Configurações (RGB, Split, etc.) |
+| `keyboards/sofle/rev1/keymaps/bruno_becker/rules.mk` | Features habilitadas |
+
+### Características do Keymap
+
+- **5 camadas**: QWERTY (0), Colemak DH (1), Símbolos/Números (2), Navegação/Atalhos (3), Numpad/Mídia (4)
+- **2 LEDs RGB WS2812** (1 em cada lado) - Porta D3
+- **2 Encoders (Knobs)**:
+  - Esquerdo: Volume (Vol+ / Vol-)
+  - Direito: Brilho RGB / Matiz (click alterna cor)
+- **Master**: Lado direito (`MASTER_RIGHT`)
+
+### Comandos para Compilar e Flashar
+
+```bash
+# Compilar
+qmk compile -kb sofle/rev1 -km bruno_becker
+
+# Compilar e flashar (automático)
+qmk flash -kb sofle/rev1 -km bruno_becker
+
+# Ou usando make
+make sofle/rev1:bruno_becker
+```
+
+### Modo DFU (para entrar em bootloader)
+
+1. **Método físico**: Pressione o botão reset no Pro Micro 2x rapidamente
+2. **Método via keymap**: Pressione `Reset` na camada 3 (se configurado) ou use `QK_BOOT`
+
+### Atualizar via JSON (QMK Configurator)
+
+```bash
+# Converter JSON para C
+qmk json2c sofle_v2_bruno.json -o keyboards/sofle/rev1/keymaps/bruno_becker/keymap.c
+
+# Depois compile normalmente
+qmk compile -kb sofle/rev1 -km bruno_becker
+```
+
+### Solução de Problemas
+
+| Problema | Solução |
+|----------|---------|
+| Teclado não responde | Verifique cabo USB no lado **direito** (master) |
+| Metade não funciona | Verifique conexão TRRS entre as metades |
+| LEDs não acendem | Verifique jumper/solda no pino D3 |
+| Encoder não funciona | Verifique solda nos pinos F4/F5 |
+
+### Documentação QMK
+
+- [Guia de início](https://docs.qmk.fm/#/newbs)
+- [Comandos CLI](https://docs.qmk.fm/#/cli_commands)
+- [Tap Dance](https://docs.qmk.fm/#/feature_tap_dance)
+- [Encoders](https://docs.qmk.fm/#/feature_encoders)
