@@ -85,6 +85,19 @@ qmk json2c sofle_v2_bruno.json -o keyboards/sofle/rev1/keymaps/bruno_becker/keym
 qmk compile -kb sofle/rev1 -km bruno_becker
 ```
 
+### Como transformar o keymap.c de volta para .json
+```bash
+qmk c2json -kb sofle/rev1 -km bruno_becker -o sofle_v2_bruno_atualizado.json
+
+# ou
+qmk c2json -kb sofle/rev1 -km bruno_becker --no-cpp -o sofle_v2_bruno_atualizado.json
+```
+
+### Converter o JSON para C (Atualizar o Keymap)
+```bash
+qmk json2c sofle_v2_bruno.json -o keyboards/sofle/rev1/keymaps/bruno_becker/keymap.c
+```
+
 ### Solução de Problemas
 
 | Problema | Solução |
